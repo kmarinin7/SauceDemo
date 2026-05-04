@@ -1,55 +1,48 @@
 package tests;
 
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import static org.testng.Assert.assertEquals;
 
 public class CheckoutTest extends BaseTest {
 
-    // TC-07: Успешное оформление заказа
-    @Test
-    public void placeOrder() {
-        loginPage.open();
-        loginPage.login("standard_user", "secret_sauce");
-        productsPage.addItemBucket(1);
-        productsPage.goToCart();
-        cartPage.goCheckout();
-        checkoutPage.makeOrder("David", "Wilson", "789-012");
-        assertEquals(checkoutPage.getTitleCheckout(), "Checkout: Overview");
+    @DataProvider(name = "checkoutData")
+    public Object[][] checkoutData() {
+        return new Object[][]{
+                // TC-07: Успешное оформление заказа
+                {"David", "Wilson", "789-012", "Checkout: Overview", null},
+
+                // TC-08: Пустое поле First Name
+                {"", "Wilson", "789-012", null, "Error: First Name is required"},
+
+                // TC-09: Пустое поле Last Name
+                {"David", "", "789-012", null, "Error: Last Name is required"},
+
+                // TC-10: Пустое поле Postal Code
+                {"David", "Wilson", "", null, "Error: Postal Code is required"}
+        };
     }
 
-    // TC-08: Пустое поле First Name
-    @Test
-    public void emptyFirstName() {
+    @Test(
+            dataProvider = "checkoutData",
+            groups = {"smoke", "regression"},
+            description = "Параметризованный тест оформления заказа",
+            testName = "Оформление заказа"
+    )
+    public void checkoutTest(String firstName, String lastName, String postalCode,
+                             String successTitle, String errorMessage) {
         loginPage.open();
         loginPage.login("standard_user", "secret_sauce");
         productsPage.addItemBucket(1);
         productsPage.goToCart();
         cartPage.goCheckout();
-        checkoutPage.makeOrder("", "Wilson", "789-012");
-        assertEquals(checkoutPage.getErrorMessage(), "Error: First Name is required");
-    }
 
-    // TC-09: Пустое поле Last Name
-    @Test
-    public void emptyLastName() {
-        loginPage.open();
-        loginPage.login("standard_user", "secret_sauce");
-        productsPage.addItemBucket(1);
-        productsPage.goToCart();
-        cartPage.goCheckout();
-        checkoutPage.makeOrder("David", "", "789-012");
-        assertEquals(checkoutPage.getErrorMessage(), "Error: Last Name is required");
-    }
+        checkoutPage.makeOrder(firstName, lastName, postalCode);
 
-    // TC-10: Пустое поле Postal Code
-    @Test
-    public void emptyPostalCode() {
-        loginPage.open();
-        loginPage.login("standard_user", "secret_sauce");
-        productsPage.addItemBucket(1);
-        productsPage.goToCart();
-        cartPage.goCheckout();
-        checkoutPage.makeOrder("David", "Wilson", "");
-        assertEquals(checkoutPage.getErrorMessage(), "Error: Postal Code is required");
+        if (successTitle != null) {
+            assertEquals(checkoutPage.getTitleCheckout(), successTitle);
+        } else {
+            assertEquals(checkoutPage.getErrorMessage(), errorMessage);
+        }
     }
 }

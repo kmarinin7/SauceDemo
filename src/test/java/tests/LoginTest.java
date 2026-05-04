@@ -1,39 +1,45 @@
 package tests;
 
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import static org.testng.Assert.assertEquals;
 
 public class LoginTest extends BaseTest {
 
-    // TC-01: Успешная авторизация с валидными данными
-    @Test
-    public void checkLoginWithPositiveCred() {
-        loginPage.open();
-        loginPage.login("standard_user", "secret_sauce");
-        assertEquals(productsPage.getTitle(), "Products");
+    @DataProvider(name = "loginData")
+    public Object[][] loginData() {
+        return new Object[][]{
+                // TC-01: Успешная авторизация
+                {"standard_user", "secret_sauce", "Products", null, true},
+
+                // TC-02: Пустой пароль
+                {"standard_user", "", null, "Epic sadface: Password is required", false},
+
+                // TC-03: Пустой логин
+                {"", "secret_sauce", null, "Epic sadface: Username is required", false},
+
+                // TC-04: Невалидные данные
+                {"name", "pass", null, "Epic sadface: Username and password do not match any user in this service",
+                        false}
+
+        };
     }
 
-    // TC-02: Авторизация с пустым паролем
-    @Test
-    public void checkLoginWithEmptyPassword() {
+    @Test(
+            dataProvider = "loginData",
+            groups = {"smoke", "regression"},
+            description = "Параметризованный тест авторизации",
+            testName = "Авторизация в системе SauceDemo"
+    )
+    public void checkLogin(String username, String password, String successTitle,
+                           String errorMessage, boolean isPositive) {
         loginPage.open();
-        loginPage.login("standard_user", "");
-        assertEquals(loginPage.getErrorMessage(), "Epic sadface: Password is required");
-    }
+        loginPage.login(username, password);
 
-    // TC-03: Авторизация с пустым логином
-    @Test
-    public void checkLoginWithEmptyLogin() {
-        loginPage.open();
-        loginPage.login("", "secret_sauce");
-        assertEquals(loginPage.getErrorMessage(), "Epic sadface: Username is required");
-    }
-
-    // TC-04: Авторизация с невалидными данными
-    @Test
-    public void checkLoginWithNegativeCred() {
-        loginPage.open();
-        loginPage.login("name", "pass");
-        assertEquals(loginPage.getErrorMessage(), "Epic sadface: Username and password do not match any user in this service");
+        if (isPositive) {
+            assertEquals(productsPage.getTitle(), successTitle);
+        } else {
+            assertEquals(loginPage.getErrorMessage(), errorMessage);
+        }
     }
 }
