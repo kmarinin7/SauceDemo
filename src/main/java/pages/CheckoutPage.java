@@ -1,5 +1,6 @@
 package pages;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
@@ -16,7 +17,7 @@ public class CheckoutPage extends BasePage {
         super(driver);
     }
 
-    // оформить заказ
+    @Step("Оформить заказ: Имя = '{firstName}', Фамилия = '{lastName}', Почтовый индекс = '{postalCode}'")
     public void makeOrder(String firstName, String lastName, String postalCode) {
         driver.findElement(FIRST_NAME_FIELD).sendKeys(firstName);
         driver.findElement(LAST_NAME_FIELD).sendKeys(lastName);
@@ -24,17 +25,17 @@ public class CheckoutPage extends BasePage {
         driver.findElement(ORDER_BUTTON).click();
     }
 
-    // получить заголовок страницы оформления заказа
+    @Step("Получить заголовок страницы оформления заказа")
     public String getTitleCheckout() {
         return driver.findElement(TITLE).getText();
     }
 
-    // получить сообщение об ошибке
+    @Step("Получить сообщение об ошибке на странице оформления")
     public String getErrorMessage() {
         return driver.findElement(ERROR_MESSAGE).getText();
     }
 
-    // вернуться в корзину
+    @Step("Вернуться в корзину (кнопка 'Cancel')")
     public void backToCart() {
         driver.findElement(By.xpath("//*[@data-test='cancel']")).click();
     }

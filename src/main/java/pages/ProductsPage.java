@@ -1,5 +1,6 @@
 package pages;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -21,52 +22,53 @@ public class ProductsPage extends BasePage {
     private String getRemoveButtonXpath(int position) {
         return String.format("(//*[@class='inventory_item'])[%d]//button[text()='Remove']", position + 1);
     }
+
     public ProductsPage(WebDriver driver) {
         super(driver);
     }
 
-    // открыть страницу товаров
+    @Step("Открыть страницу с товарами")
     public void open() {
         driver.get(BASE_URL + "/inventory.html");
     }
 
-    // получить заголовок
+    @Step("Получить заголовок страницы товаров")
     public String getTitle() {
         return driver.findElement(TITLE).getText();
     }
 
-    // добавить товар в корзину 1
+    @Step("Добавить товар в корзину по позиции {position}")
     public void addItemBucket(int position) {
         String xpath = String.format("(//div[@class='inventory_item'])[%d]//button[text()='Add to cart']", position);
         driver.findElement(By.xpath(xpath)).click();
     }
 
-    // добавить товар в корзину 2
+    @Step("Добавить товар в корзину по позиции {position}")
     public void addToCart(int position) {
         driver.findElement(By.xpath(getAddButtonXpath(position))).click();
     }
 
-    // удалить из корзины
+    @Step("Удалить товар из корзины по позиции {position}")
     public void removeFromCart(int position) {
         driver.findElement(By.xpath(getRemoveButtonXpath(position))).click();
     }
 
-    // видима ли кнопка "Add to cart"
+    @Step("Проверить, видна ли кнопка 'Add to cart' у товара {position}")
     public boolean isAddButtonVisible(int position) {
         return !driver.findElements(By.xpath(getAddButtonXpath(position))).isEmpty();
     }
 
-    // видима ли кнопка "Remove"
+    @Step("Проверить, видна ли кнопка 'Remove' у товара {position}")
     public boolean isRemoveButtonVisible(int position) {
         return !driver.findElements(By.xpath(getRemoveButtonXpath(position))).isEmpty();
     }
 
-    // получить количество товаров на странице
+    @Step("Получить количество товаров на странице")
     public int getItemsCount() {
         return driver.findElements(INVENTORY_ITEMS).size();
     }
 
-    // получить значение счетчика корзины
+    @Step("Получить значение счетчика корзины")
     public String getCartBadgeCount() {
         if (driver.findElements(CART_BADGE).isEmpty()) {
             return "0";
@@ -74,30 +76,24 @@ public class ProductsPage extends BasePage {
         return driver.findElement(CART_BADGE).getText();
     }
 
-    // получить текст кнопки "Remove" у товара
-    public String getRemoveMessage(int position) {
-        String xpath = String.format("(//div[@class='inventory_item'])[%d]//button[text()='Remove']", position);
-        return driver.findElement(By.xpath(xpath)).getText();
-    }
-
-    // проверить, есть ли кнопка "Remove" у товара
+    @Step("Проверить, добавлен ли товар {position} в корзину (есть кнопка Remove)")
     public boolean isProductAddedToCart(int position) {
         String xpath = String.format("(//div[@class='inventory_item'])[%d]//button[text()='Remove']", position);
         return !driver.findElements(By.xpath(xpath)).isEmpty();
     }
 
-    // удалить товар по позиции
+    @Step("Удалить товар по позиции {position}")
     public void removeItem(int position) {
         String xpath = String.format("(//div[@class='inventory_item'])[%d]//button[text()='Remove']", position);
         driver.findElement(By.xpath(xpath)).click();
     }
 
-    // перейти в корзину
+    @Step("Перейти в корзину")
     public void goToCart() {
         driver.findElement(CART_ICON).click();
     }
 
-    // выход из системы через бургер-меню
+    @Step("Выйти из системы через бургер-меню")
     public void logoutBurger() {
         driver.findElement(BURGER_MENU).click();
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
