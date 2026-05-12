@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite thread-count="2"
+       name="Sauce Demo"
+       parallel="classes">
+
+    <test name="Chrome">
+        <classes>
+            <class name="tests.LoginTest" />
+            <class name="tests.CartTest" />
+            <parameter name="browser" value="chrome"/>
+        </classes>
+    </test>
+
+    <test name="Edge">
+        <classes>
+            <class name="tests.CheckoutTest" />
+            <class name="tests.ProductsPageTest" />
+            <parameter name="browser" value="edge"/>
+        </classes>
+    </test>
+</suite>

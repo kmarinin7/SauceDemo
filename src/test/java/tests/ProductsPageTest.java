@@ -7,7 +7,11 @@ import static org.testng.Assert.assertTrue;
 public class ProductsPageTest extends BaseTest {
 
     // TC-11: Проверка заголовка страницы "Products"
-    @Test
+    @Test(
+            groups = {"smoke", "regression"},
+            description = "TC-11: Проверка заголовка страницы 'Products'",
+            testName = "Заголовок Products"
+    )
     public void testProductsPageTitle() {
         loginPage.open();
         loginPage.login("standard_user", "secret_sauce");
@@ -15,7 +19,11 @@ public class ProductsPageTest extends BaseTest {
     }
 
     // TC-12: Проверка отображения списка товаров
-    @Test
+    @Test(
+            groups = {"regression"},
+            description = "TC-12: Проверка отображения списка товаров",
+            testName = "Количество товаров"
+    )
     public void testProductsListDisplayed() {
         loginPage.open();
         loginPage.login("standard_user", "secret_sauce");
@@ -23,7 +31,11 @@ public class ProductsPageTest extends BaseTest {
     }
 
     // TC-13: Добавление товара в корзину
-    @Test
+    @Test(
+            groups = {"smoke", "regression"},
+            description = "TC-13: Добавление товара в корзину",
+            testName = "Добавление в корзину"
+    )
     public void testAddToCart() {
         loginPage.open();
         loginPage.login("standard_user", "secret_sauce");
@@ -33,7 +45,11 @@ public class ProductsPageTest extends BaseTest {
     }
 
     // TC-14: Удаление товара из корзины
-    @Test
+    @Test(
+            groups = {"regression"},
+            description = "TC-14: Удаление товара из корзины",
+            testName = "Удаление из корзины"
+    )
     public void testRemoveFromCart() {
         loginPage.open();
         loginPage.login("standard_user", "secret_sauce");
@@ -44,7 +60,11 @@ public class ProductsPageTest extends BaseTest {
     }
 
     // TC-15: Проверка счётчика товаров в иконке корзины
-    @Test
+    @Test(
+            groups = {"regression"},
+            description = "TC-15: Проверка счётчика товаров в иконке корзины",
+            testName = "Счётчик корзины"
+    )
     public void testCartBadgeCount() {
         loginPage.open();
         loginPage.login("standard_user", "secret_sauce");
