@@ -4,6 +4,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
+import org.testng.ITestContext;
 import org.testng.annotations.*;
 import pages.CartPage;
 import pages.CheckoutPage;
@@ -23,8 +24,8 @@ public class BaseTest {
     CheckoutPage checkoutPage;
 
     @Parameters({"browser"})
-    @BeforeMethod (alwaysRun = true)
-    public void setUp(@Optional("chrome") String browser) {
+    @BeforeMethod(alwaysRun = true)
+    public void setUp(@Optional("chrome") String browser, ITestContext iTestContext) {
         if (browser.equalsIgnoreCase("chrome")) {
             ChromeOptions options = new ChromeOptions();
             HashMap<String, Object> chromePrefs = new HashMap<>();
@@ -42,6 +43,7 @@ public class BaseTest {
             driver.manage().window().maximize();
         }
 
+        iTestContext.setAttribute("driver", driver);
 
         loginPage = new LoginPage(driver);
         productsPage = new ProductsPage(driver);
@@ -49,8 +51,10 @@ public class BaseTest {
         checkoutPage = new CheckoutPage(driver);
     }
 
-        @AfterMethod(alwaysRun = true)
-        public void tearDawn() {
+    @AfterMethod(alwaysRun = true)
+    public void tearDown() {
+        if (driver != null) {
             driver.quit();
         }
     }
+}
