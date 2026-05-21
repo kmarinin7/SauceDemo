@@ -29,9 +29,9 @@ public class TestListener implements ITestListener {
         if (driver != null) {
             String screenshotName = iTestResult.getName() + "_" + System.currentTimeMillis();
             AllureUtils.takeScreenshot(driver, screenshotName);
-            System.out.println("✅ Скриншот сделан: " + screenshotName);
+            System.out.println("Скриншот сделан: " + screenshotName);
         } else {
-            System.out.println("❌ Driver is null, скриншот не сделан");
+            System.out.println("Driver is null, скриншот не сделан");
         }
     }
 

@@ -6,10 +6,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.testng.ITestContext;
 import org.testng.annotations.*;
-import pages.CartPage;
-import pages.CheckoutPage;
-import pages.LoginPage;
-import pages.ProductsPage;
+import pages.*;
 import utils.TestListener;
 
 import java.util.HashMap;
@@ -18,10 +15,13 @@ import java.util.HashMap;
 public class BaseTest {
 
     WebDriver driver;
+
     LoginPage loginPage;
     ProductsPage productsPage;
     CartPage cartPage;
     CheckoutPage checkoutPage;
+    CheckoutOverviewPage checkoutOverviewPage;
+    CheckoutCompletePage checkoutCompletePage;
 
     @Parameters({"browser"})
     @BeforeMethod(alwaysRun = true)
@@ -49,6 +49,8 @@ public class BaseTest {
         productsPage = new ProductsPage(driver);
         cartPage = new CartPage(driver);
         checkoutPage = new CheckoutPage(driver);
+        checkoutOverviewPage = new CheckoutOverviewPage(driver);
+        checkoutCompletePage = new CheckoutCompletePage(driver);
     }
 
     @AfterMethod(alwaysRun = true)
