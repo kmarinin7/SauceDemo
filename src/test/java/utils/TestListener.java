@@ -5,6 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
+import utils.AllureUtils;
 
 import java.util.concurrent.TimeUnit;
 
@@ -29,7 +30,11 @@ public class TestListener implements ITestListener {
 
         WebDriver driver = (WebDriver) iTestResult.getTestContext().getAttribute("driver");
         if (driver != null) {
-            AllureUtils.takeScreenshot(driver);
+            String screenshotName = iTestResult.getName() + "_" + System.currentTimeMillis();
+            AllureUtils.takeScreenshot(driver, screenshotName);
+            log.info("Скриншот сделан: {}", screenshotName);
+        } else {
+            log.warn("Driver is null, скриншот не сделан");
         }
     }
 

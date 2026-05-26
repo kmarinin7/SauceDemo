@@ -17,6 +17,7 @@ import java.util.HashMap;
 public class BaseTest {
 
     WebDriver driver;
+
     LoginPage loginPage;
     ProductsPage productsPage;
     CartPage cartPage;

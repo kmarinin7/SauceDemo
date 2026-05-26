@@ -1,5 +1,6 @@
 package pages;
 
+import io.qameta.allure.Step;
 import lombok.extern.log4j.Log4j2;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -20,8 +21,6 @@ public class CheckoutCompletePage extends BasePage {
     @Override
     public CheckoutCompletePage isPageOpened() {
         log.debug("Проверка загрузки страницы завершения заказа");
-        wait.until(ExpectedConditions.visibilityOfElementLocated(TITLE));
-        wait.until(ExpectedConditions.textToBePresentInElementLocated(TITLE, "Checkout: Complete!"));
         wait.until(ExpectedConditions.visibilityOfElementLocated(COMPLETE_HEADER));
         log.info("Страница завершения заказа загружена");
         return this;

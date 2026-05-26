@@ -1,6 +1,7 @@
 package pages;
 
 import lombok.extern.log4j.Log4j2;
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -61,12 +62,32 @@ public class CheckoutPage extends BasePage {
         driver.findElement(CONTINUE_BUTTON).click();
         return new CheckoutOverviewPage(driver);
     }
+      public CheckoutPage clickContinueExpectingError() {
+        log.info("Нажатие кнопки Continue (ожидается ошибка)");
+        driver.findElement(CONTINUE_BUTTON).click();
+        return this;
+    }
+  
 
     public CartPage backToCart() {
         log.info("Возврат в корзину (Cancel)");
         wait.until(ExpectedConditions.elementToBeClickable(CANCEL_BUTTON)).click();
         return new CartPage(driver);
     }
+    public CheckoutOverviewPage makeOrderValid(String firstName, String lastName, String postalCode) {
+        log.info("Оформление валидного заказа: {} {}, {}", firstName, lastName, postalCode);
+        return enterFirstName(firstName)
+                .enterLastName(lastName)
+                .enterPostalCode(postalCode)
+                .clickContinue();
+    }
+    public CheckoutPage makeOrderInvalid(String firstName, String lastName, String postalCode) {
+        log.info("Оформление НЕвалидного заказа: {} {}, {}", firstName, lastName, postalCode);
+        return enterFirstName(firstName)
+                .enterLastName(lastName)
+                .enterPostalCode(postalCode)
+                .clickContinueExpectingError();
+    }  
 
     public void makeOrder(String firstName, String lastName, String postalCode) {
         log.info("Оформление заказа: {} {}, {}", firstName, lastName, postalCode);

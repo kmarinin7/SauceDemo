@@ -1,5 +1,6 @@
 package pages;
 
+import io.qameta.allure.Step;
 import lombok.extern.log4j.Log4j2;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -40,6 +41,17 @@ public class CheckoutOverviewPage extends BasePage {
         return new CheckoutCompletePage(driver);
     }
 
+    @Step("Нажать кнопку 'Cancel'")
+    public ProductsPage clickCancel() {
+        wait.until(ExpectedConditions.elementToBeClickable(CANCEL_BUTTON)).click();
+        return new ProductsPage(driver);
+    }
+
+    @Step("Получить заголовок страницы")
+    public String getTitle() {
+        return driver.findElement(TITLE).getText();
+    }
+}
     public String getTitle() {
         String title = driver.findElement(TITLE).getText();
         log.debug("Заголовок страницы Overview: {}", title);

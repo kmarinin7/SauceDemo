@@ -52,6 +52,15 @@ public class LoginPage extends BasePage {
         driver.findElement(LOGIN_BUTTON).click();
         return new ProductsPage(driver);
     }
+    public LoginPage clickLoginExpectingError() {
+        driver.findElement(LOGIN_BUTTON).click();
+        return this;
+    }
+    public LoginPage loginInvalid(String name, String password) {
+        return enterUsername(name)
+                .enterPassword(password)
+                .clickLoginExpectingError();
+    }  
 
     public ProductsPage login(String name, String password) {
         log.info("Авторизация пользователя: {}", name);
