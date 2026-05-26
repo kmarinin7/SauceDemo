@@ -47,11 +47,6 @@ public class CheckoutOverviewPage extends BasePage {
         return new ProductsPage(driver);
     }
 
-    @Step("Получить заголовок страницы")
-    public String getTitle() {
-        return driver.findElement(TITLE).getText();
-    }
-}
     public String getTitle() {
         String title = driver.findElement(TITLE).getText();
         log.debug("Заголовок страницы Overview: {}", title);
